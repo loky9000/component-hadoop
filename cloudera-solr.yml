@@ -22,8 +22,8 @@ application:
       Node_Manager_DNS: "bind(cloudera-solr#vms.Node_Manager_DNS)"
       Node_Master_DNS: "bind(cloudera-solr#vms.Node_Master_DNS)"
       DataNodesDNS: "bind(cloudera-solr#vms.DataNodesDNS)"
-    cloudera-pig:
-      Pig_Status: "bind(cloudera-solr#cloudera-pig.Pig_Status)"
+    cloudera-hadoop:
+      "*": "bind(cloudera-solr#cloudera-hadoop.*)"
     cloudera-solr:
       Solr_Uri: "bind(cloudera-solr#result.Solr_Uri)"
   components:
@@ -55,13 +55,21 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-pig:
-          Pig_Status: consume-signal(string)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         result:
           Solr_Uri:
             type: publish-signal(list<string>)
             name: Solr URI
-      required: [vms, cloudera-pig, compute-Manager, compute-Master, compute-DataNodes]
+      required: [vms, cloudera-hadoop, compute-Manager, compute-Master, compute-DataNodes]
       configuration:
         configuration.triggers: {}
         configuration.workflows:

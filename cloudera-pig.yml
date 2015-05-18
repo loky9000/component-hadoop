@@ -67,23 +67,6 @@ application:
                     multi: true
                   output:
                     signals: result
-              - install-pig:
-                  action: chefrun
-                  precedingPhases: [ get-signals ]
-                  parameters:
-                    isSudo: true
-                    isSolo: true
-                    roles: [ "compute-Manager" ]
-                    recipeUrl: "{$.cookbooks_url}"
-                    runList: [ "recipe[cloudera::pig]" ]
-                    retryCount: 2
-                    jattrs:
-                      java:
-                        java_home: "/usr/java/jdk6"
-                      cloudera:
-                        hadoop:
-                          version: "{$.cloudera_hadoop_version}"
-                        repository_url: "{$.repository_url}"
             return:
               - Pig_Status:
                   value: "Installed"

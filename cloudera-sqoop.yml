@@ -16,8 +16,8 @@ application:
       Node_Manager_DNS: "bind(cloudera-sqoop#vms.Node_Manager_DNS)"
       Node_Master_DNS: "bind(cloudera-sqoop#vms.Node_Master_DNS)"
       DataNodesDNS: "bind(cloudera-sqoop#vms.DataNodesDNS)"
-    cloudera-impala:
-      Impala_Master: "bind(cloudera-sqoop#cloudera-impala.Impala_Master)"
+    cloudera-hadoop:
+      "*": "bind(cloudera-sqoop#cloudera-hadoop.*)"
     cloudera-sqoop:
       Sqoop_Master: "bind(cloudera-sqoop#result.Sqoop_Master)"
   components:
@@ -38,13 +38,21 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-impala:
-          Impala_Master: consume-signal(list<string>)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         result:
           Sqoop_Master:
             type: publish-signal(list<string>)
             name: Sqoop server
-      required: [vms, cloudera-impala, compute-Master]
+      required: [vms, cloudera-hadoop, compute-Master]
       configuration:
         configuration.triggers: {}
         configuration.workflows:

@@ -3,10 +3,10 @@ application:
     ##configuration.ami: "us-west-1/ami-0e073d4b"
     configuration.datanodes_quantity: 5
     configuration.cluster_prefix: "CDH"
-    configuration.cookbooks_url: "https://s3.amazonaws.com/qubell-starter-kit-artifacts/qubell-bazaar/component-hadoop-cookbooks-stable-4dd9b16.tar.gz"
+    configuration.cookbooks_url: "https://s3.amazonaws.com/qubell-starter-kit-artifacts/qubell-bazaar/component-hadoop-cookbooks-stable-e1a893c.tar.gz"
     configuration.repository_url: "http://archive.cloudera.com"
-    configuration.cloudera_hadoop_version: "5.1.3"
-    configuration.cloudera_manager_version: "5.1.3"
+    configuration.cloudera_hadoop_version: "5.2.0"
+    configuration.cloudera_manager_version: "5.2.0"
     configuration.cloudera_search_version: "1.3.0"
     configuration.cloudera_impala_version: "1.4.0"
     configuration.metastore_root_password: "hive"
@@ -24,10 +24,10 @@ application:
       datanodes_quantity: "bind(cluster#configuration.quantity)"
       cluster_prefix: "bind(vms#input.cluster_prefix)"
       cookbooks_url: "bind(vms#input.cookbooks_url, cloudera-manager#configuration.cookbooks_url, cloudera-hadoop#configuration.cookbooks_url, cloudera-hive#configuration.cookbooks_url, cloudera-oozie#configuration.cookbooks_url, cloudera-impala#configuration.cookbooks_url, cloudera-sqoop#configuration.cookbooks_url, cloudera-flume#configuration.cookbooks_url, cloudera-pig#configuration.cookbooks_url, cloudera-solr#configuration.cookbooks_url, cloudera-yarn#configuration.cookbooks_url, cloudera-spark#configuration.cookbooks_url, cloudera-hue#configuration.cookbooks_url)"
-      repository_url: "bind(cloudera-manager#configuration.repository_url, cloudera-hadoop#configuration.repository_url, cloudera-hive#configuration.repository_url, cloudera-oozie#configuration.repository_url, cloudera-impala#configuration.repository_url, cloudera-sqoop#configuration.repository_url, cloudera-flume#configuration.repository_url, cloudera-pig#configuration.repository_url, cloudera-solr#configuration.repository_url, cloudera-yarn#configuration.repository_url, cloudera-spark#configuration.repository_url, cloudera-hue#configuration.repository_url)"
-      cloudera_manager_version: "bind(cloudera-manager#configuration.cloudera_manager_version, cloudera-hadoop#configuration.cloudera_manager_version, cloudera-hive#configuration.cloudera_manager_version, cloudera-oozie#configuration.cloudera_manager_version, cloudera-impala#configuration.cloudera_manager_version, cloudera-sqoop#configuration.cloudera_manager_version, cloudera-solr#configuration.cloudera_manager_version, cloudera-yarn#configuration.cloudera_manager_version, cloudera-spark#configuration.cloudera_manager_version, cloudera-hue#configuration.cloudera_manager_version)"
-      cloudera_hadoop_version: "bind(cloudera-hadoop#configuration.cloudera_hadoop_version,cloudera-hive#configuration.cloudera_hadoop_version, cloudera-oozie#configuration.cloudera_hadoop_version, cloudera-impala#configuration.cloudera_hadoop_version, cloudera-sqoop#configuration.cloudera_hadoop_version, cloudera-flume#configuration.cloudera_hadoop_version, cloudera-pig#configuration.cloudera_hadoop_version, cloudera-solr#configuration.cloudera_hadoop_version, cloudera-yarn#configuration.cloudera_hadoop_version, cloudera-spark#configuration.cloudera_hadoop_version, cloudera-hue#configuration.cloudera_hadoop_version)"
-      metastore_root_password: "bind(cloudera-hive#configuration.metastore_root_password)"
+      repository_url: "bind(vms#input.repository_url, cloudera-manager#configuration.repository_url, cloudera-hadoop#configuration.repository_url, cloudera-hive#configuration.repository_url, cloudera-oozie#configuration.repository_url, cloudera-impala#configuration.repository_url, cloudera-sqoop#configuration.repository_url, cloudera-flume#configuration.repository_url, cloudera-pig#configuration.repository_url, cloudera-solr#configuration.repository_url, cloudera-yarn#configuration.repository_url, cloudera-spark#configuration.repository_url, cloudera-hue#configuration.repository_url)"
+      cloudera_manager_version: "bind(vms#input.cloudera_manager_version, cloudera-manager#configuration.cloudera_manager_version, cloudera-hadoop#configuration.cloudera_manager_version, cloudera-hive#configuration.cloudera_manager_version, cloudera-oozie#configuration.cloudera_manager_version, cloudera-impala#configuration.cloudera_manager_version, cloudera-sqoop#configuration.cloudera_manager_version, cloudera-solr#configuration.cloudera_manager_version, cloudera-yarn#configuration.cloudera_manager_version, cloudera-spark#configuration.cloudera_manager_version, cloudera-hue#configuration.cloudera_manager_version)"
+      cloudera_hadoop_version: "bind(vms#input.cloudera_hadoop_version, cloudera-hadoop#configuration.cloudera_hadoop_version,cloudera-hive#configuration.cloudera_hadoop_version, cloudera-oozie#configuration.cloudera_hadoop_version, cloudera-impala#configuration.cloudera_hadoop_version, cloudera-sqoop#configuration.cloudera_hadoop_version, cloudera-flume#configuration.cloudera_hadoop_version, cloudera-pig#configuration.cloudera_hadoop_version, cloudera-solr#configuration.cloudera_hadoop_version, cloudera-yarn#configuration.cloudera_hadoop_version, cloudera-spark#configuration.cloudera_hadoop_version, cloudera-hue#configuration.cloudera_hadoop_version)"
+      metastore_root_password: "bind(vms#input.metastore_root_password, cloudera-hive#configuration.metastore_root_password)"
       cloudera_impala_version: "bind(cloudera-impala#configuration.cloudera_impala_version)"
       cloudera_search_version: "bind(cloudera-solr#configuration.cloudera_search_version)"
     compute-config:
@@ -94,15 +94,17 @@ application:
     - [vms, cloudera-yarn]
     - [vms, cloudera-spark]
     - [cloudera-hadoop, cloudera-manager]
-    - [cloudera-hadoop, cloudera-yarn]
     - [cloudera-hive, cloudera-hadoop]
-    - [cloudera-oozie, cloudera-hive]
-    - [cloudera-impala, cloudera-oozie]
-    - [cloudera-sqoop, cloudera-impala]
-    - [cloudera-flume, cloudera-sqoop]
-    - [cloudera-pig, cloudera-flume]
-    - [cloudera-solr, cloudera-pig]
+    - [cloudera-yarn, cloudera-hadoop]
     - [cloudera-spark, cloudera-yarn]
+    - [cloudera-oozie, cloudera-hadoop]
+    - [cloudera-impala, cloudera-hive]
+    - [cloudera-sqoop, cloudera-hadoop]
+    - [cloudera-flume, cloudera-hadoop]
+    - [cloudera-pig, cloudera-flume]
+    - [cloudera-solr, cloudera-hadoop]
+    - [cloudera-hue, cloudera-impala]
+    - [cloudera-hue, cloudera-sqoop]
     - [cloudera-hue, cloudera-solr]
     - [monitoring, compute-Manager]
     - [monitoring, vms]
@@ -199,6 +201,18 @@ application:
           cookbooks_url:
             type: configuration(string)
             name: Chef cookbooks
+          repository_url:
+            type: configuration(string)
+            name: Cloudera RPM repository
+          cloudera_hadoop_version:
+            type: configuration(string)
+            name: Cloudera Hadoop version
+          cloudera_manager_version:
+            type: configuration(string)
+            name: Cloudera Manager version
+          metastore_root_password:
+            type: configuration(string)
+            name: MetaStore root password
         compute-Master:
           networks:        consume-signal(map<string, map<string, string>>)
           exec:            send-command(string command, int timeout => string stdOut, string stdErr => string stdOut, string stdErr, int exitCode)
@@ -284,6 +298,108 @@ application:
                       jattrs:
                           base:
                               hosts_aws: [ "{$.masterDns[*]}", "{$.managerDns[*]}", "{$.datanodeDns[*]}" ]
+              - install-pkgs-on-all-nodes:
+                  action: chefrun
+                  precedingPhases: [ update-hosts ]
+                  parameters:
+                      isSudo: true
+                      isSolo: true
+                      roles: [ "compute-DataNodes", "compute-Manager", "compute-Master" ]
+                      recipeUrl: "{$.cookbooks_url}"
+                      runList: [ "recipe[cloudera::install_pkgs]", ]
+                      jattrs:
+                        java:
+                          java_home: "/usr/java/jdk6"
+                        cloudera:
+                          master:
+                            host: "{$.masterDns[*][0]}"
+                          manager:
+                            host: "{$.managerDns[*][0]}"
+                            version: "{$.cloudera_manager_version}"
+                          datanodes:
+                            hosts: "{$.datanodeDns[*]}"
+                          hadoop:
+                            version: "{$.cloudera_hadoop_version}"
+                          repository_url: "{$.repository_url}"
+              - install-pkgs-on-manager:
+                  action: chefrun
+                  precedingPhases: [ install-pkgs-on-all-nodes ]
+                  parameters:
+                      isSudo: true
+                      isSolo: true
+                      roles: [ "compute-Manager" ]
+                      recipeUrl: "{$.cookbooks_url}"
+                      runList: [ "recipe[cloudera::install_pkgs_manager]", ]
+                      jattrs:
+                        java:
+                          java_home: "/usr/java/jdk6"
+                        cloudera:
+                          master:
+                            host: "{$.masterDns[*][0]}"
+                          manager:
+                            host: "{$.managerDns[*][0]}"
+                            version: "{$.cloudera_manager_version}"
+                          jobtracker:
+                            host: "{$.managerDns[*][0]}"
+                            ip: "{$.signals.compute-Manager.*.networks.public.ip}"
+                          datanodes:
+                            hosts: "{$.datanodeDns[*]}"
+                          hadoop:
+                            version: "{$.cloudera_hadoop_version}"
+                          repository_url: "{$.repository_url}"
+                        mysql:
+                          server_debian_password: "{$.metastore_root_password}"
+                          server_root_password: "{$.metastore_root_password}"
+                          server_repl_password: "{$.metastore_root_password}"
+                          bind_address: "127.0.0.1"
+                          
+              - install-pkgs-on-master-datanodes:
+                  action: chefrun 
+                  precedingPhases: [ install-pkgs-on-all-nodes ]
+                  parameters:
+                      isSudo: true
+                      isSolo: true
+                      roles: [ "compute-DataNodes", "compute-Master" ]
+                      recipeUrl: "{$.cookbooks_url}"
+                      runList: [ "recipe[cloudera::install_pkgs_master_datanodes]", ]
+                      jattrs:
+                        java:
+                          java_home: "/usr/java/jdk6"
+                        cloudera:
+                          master:
+                            host: "{$.masterDns[*][0]}"
+                          manager:
+                            host: "{$.managerDns[*][0]}"
+                            version: "{$.cloudera_manager_version}"
+                          datanodes:
+                            hosts: "{$.datanodeDns[*]}"
+                          hadoop:
+                            version: "{$.cloudera_hadoop_version}"
+                          repository_url: "{$.repository_url}"
+              - install-pkgs-on-master:
+                  action: chefrun
+                  precedingPhases: [ install-pkgs-on-master-datanodes ]
+                  parameters:
+                      isSudo: true
+                      isSolo: true
+                      roles: [ "compute-Master" ]
+                      recipeUrl: "{$.cookbooks_url}"
+                      runList: [ "recipe[cloudera::install_pkgs_master]", ]
+                      jattrs:
+                        java:
+                          java_home: "/usr/java/jdk6"
+                        cloudera:
+                          master:
+                            host: "{$.masterDns[*][0]}"
+                          manager:
+                            host: "{$.managerDns[*][0]}"
+                            version: "{$.cloudera_manager_version}"
+                          datanodes:
+                            hosts: "{$.datanodeDns[*]}"
+                          hadoop:
+                            version: "{$.cloudera_hadoop_version}"
+                          repository_url: "{$.repository_url}"
+                
             return:
               - Node_Manager_DNS:
                   value: "{$.managerDns[*][0]}"
@@ -574,7 +690,7 @@ application:
       type: reference.Submodule
       configuration:
         __locator.application-id: "Cloudera Oozie"
-      required: [vms, cloudera-hive, compute-Manager]
+      required: [vms, cloudera-hadoop, compute-Manager]
       interfaces:
         configuration:
           repository_url:
@@ -598,9 +714,16 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-hive:
-          Hive_Server: consume-signal(list<string>)
-          Hive_Metastore: consume-signal(list<string>)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         cloudera-oozie:
           Oozie_Server:
             type: publish-signal(list<string>)
@@ -612,7 +735,7 @@ application:
       type: reference.Submodule
       configuration:
         __locator.application-id: "Cloudera Impala"
-      required: [vms, cloudera-oozie, compute-Manager, compute-Master, compute-DataNodes]
+      required: [vms, cloudera-hive, compute-Manager, compute-Master, compute-DataNodes]
       interfaces:
         configuration:
           repository_url:
@@ -649,8 +772,9 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-oozie:
-          Oozie_Server: consume-signal(list<string>)
+        cloudera-hive:
+          Hive_Server: consume-signal(list<string>)
+          Hive_Metastore: consume-signal(list<string>)
         cloudera-impala:
           Impala_Master:
             type: publish-signal(list<string>)
@@ -659,7 +783,7 @@ application:
       type: reference.Submodule
       configuration:
         __locator.application-id: "Cloudera Sqoop"
-      required: [vms, cloudera-impala, compute-Master]
+      required: [vms, cloudera-hadoop, compute-Master]
       interfaces:
         configuration:
           repository_url:
@@ -683,8 +807,16 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-impala:
-          Impala_Master: consume-signal(list<string>)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         cloudera-sqoop:
           Sqoop_Master:
             type: publish-signal(list<string>)
@@ -693,7 +825,7 @@ application:
       type: reference.Submodule
       configuration:
         __locator.application-id: "Cloudera Flume"
-      required: [vms, cloudera-sqoop, compute-Manager, compute-Master, compute-DataNodes]
+      required: [vms, cloudera-hadoop, compute-Manager, compute-Master, compute-DataNodes]
       interfaces:
         configuration:
           repository_url:
@@ -724,8 +856,16 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-sqoop:
-          Sqoop_Master: consume-signal(list<string>)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         cloudera-flume:
           Flume_Status:
             type: publish-signal(string)
@@ -765,7 +905,7 @@ application:
       type: reference.Submodule
       configuration:
         __locator.application-id: "Cloudera Solr"
-      required: [vms, cloudera-pig, compute-Manager, compute-Master, compute-DataNodes]
+      required: [vms, cloudera-hadoop, compute-Manager, compute-Master, compute-DataNodes]
       interfaces:
         configuration:
           repository_url:
@@ -802,8 +942,16 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-pig:
-          Pig_Status: consume-signal(string)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         cloudera-solr:
           Solr_Uri:
             type: publish-signal(list<string>)
@@ -917,7 +1065,7 @@ application:
       type: reference.Submodule
       configuration:
         __locator.application-id: "Cloudera Hue"
-      required: [vms, cloudera-solr, compute-Manager]
+      required: [vms, cloudera-solr, cloudera-impala, cloudera-sqoop, compute-Manager]
       interfaces:
         configuration:
           repository_url:
@@ -941,6 +1089,10 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
+        cloudera-impala:
+          Impala_Master: consume-signal(list<string>)
+        cloudera-sqoop:
+          Sqoop_Master: consume-signal(list<string>)
         cloudera-solr:
           Solr_Uri: consume-signal(list<string>)
         cloudera-hue:

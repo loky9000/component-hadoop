@@ -18,8 +18,8 @@ application:
       Node_Manager_DNS: "bind(cloudera-flume#vms.Node_Manager_DNS)"
       Node_Master_DNS: "bind(cloudera-flume#vms.Node_Master_DNS)"
       DataNodesDNS: "bind(cloudera-flume#vms.DataNodesDNS)"
-    cloudera-sqoop:
-      Sqoop_Master: "bind(cloudera-flume#cloudera-sqoop.Sqoop_Master)"
+    cloudera-hadoop:
+      "*": "bind(cloudera-flume#cloudera-hadoop.*)"
     cloudera-flume:
       Flume_Status: "bind(cloudera-flume#result.Flume_Status)"
       application-pic: "bind(metadata#output.application-pic)"
@@ -63,13 +63,21 @@ application:
           Node_Manager_DNS: consume-signal(string)
           Node_Master_DNS: consume-signal(string)
           DataNodesDNS: consume-signal(list<string>)
-        cloudera-sqoop:
-          Sqoop_Master: consume-signal(list<string>)
+        cloudera-hadoop:
+          NameNode: consume-signal(list<string>)
+          Primary_NameNode: consume-signal(list<string>)
+          Secondary_NameNode: consume-signal(list<string>)
+          Hbase_Master: consume-signal(list<string>)
+          Hbase_MasterDns: consume-signal(string)
+          JobTracker: consume-signal(list<string>)
+          cloudera_hdfsWebui: consume-signal(list<string>)
+          cloudera_jobtrackerWebui: consume-signal(list<string>)
+          cloudera_hbaseWebui: consume-signal(list<string>)
         result:
           Flume_Status:
             type: publish-signal(string)
             name: Flume status
-      required: [vms, cloudera-sqoop, compute-Manager, compute-Master, compute-DataNodes]
+      required: [vms, cloudera-hadoop, compute-Manager, compute-Master, compute-DataNodes]
       configuration:
         configuration.triggers: {}
         configuration.workflows:
@@ -81,21 +89,25 @@ application:
                     multi: true
                   output:
                     signals: result
-              - install-flume-pkg:
+              - start-flume:
                   action: chefrun
-                  phase: install-flume-pkg
+                  phase: start-flume
                   precedingPhases: [ get-signals ]
                   parameters:
                     isSudo: true
                     isSolo: true
-                    roles: [ "compute-Master", "compute-Manager", "compute-DataNodes" ]
+                    roles: [ "compute-Master" ]
                     recipeUrl: "{$.cookbooks_url}"
-                    runList: [ "recipe[cloudera::flume_pkg]" ]
+                    runList: [ "recipe[cloudera::flume_start]" ]
                     retryCount: 2
                     jattrs:
                       java:
                         java_home: "/usr/java/jdk6"
                       cloudera:
+                        manager:
+                          host:  "{$.signals.vms.*.Node_Manager_DNS[0]}"
+                        datanodes:
+                          hosts:  "{$.signals.vms.*.DataNodesDNS}"
                         hadoop:
                           version: "{$.cloudera_hadoop_version}"
                         repository_url: "{$.repository_url}"

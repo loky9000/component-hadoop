@@ -72,29 +72,10 @@ application:
                     multi: true
                   output:
                     signals: result
-              - install-spark-pkg:
-                  action: chefrun
-                  precedingPhases: [ get-signals ]
-                  parameters:
-                    isSudo: true
-                    isSolo: true
-                    roles: [ "compute-Master" ]
-                    recipeUrl: "{$.cookbooks_url}"
-                    runList: [ "recipe[cloudera::spark_pkg]" ]
-                    retryCount: 2
-                    jattrs:
-                      java:
-                        java_home: "/usr/java/jdk6"
-                      cloudera:
-                        hadoop:
-                          version: "{$.cloudera_hadoop_version}"
-                        manager:
-                          version: "{$.cloudera_manager_version}"
-                        repository_url: "{$.repository_url}"
               - add-spark-on-yarn:
                   action: chefrun
                   phase: add-spark-on-yarn
-                  precedingPhases: [ install-spark-pkg ]
+                  precedingPhases: [ get-signals ]
                   parameters:
                     isSudo: true
                     isSolo: true
